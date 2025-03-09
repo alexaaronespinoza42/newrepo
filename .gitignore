@@ -5,6 +5,7 @@
 
 # node_modules is a storage folder for Node and
 # can get very large.
+# pnpm installed (node modules folder updated)
 node_modules
 
 # .env file is for local use only. It contains
@@ -14,3 +15,6 @@ node_modules
 
 # .DS_Store is only for Mac users
 **/.DS_Store
+
+# hiding README.md file
+README.md
