@@ -147,3 +147,128 @@ footer {
       margin: 0 auto;
   }
 }
+
+/* Main container */
+.vehicle-detail-container {
+  max-width: 800px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;  /* Changed from wrap to column for better mobile layout */
+  align-items: center;     /* Centers content on smaller screens */
+}
+
+/* Image */
+.vehicle-image {
+  margin-top: 20px;
+}
+
+.vehicle-image img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Title and details */
+.vehicle-title {
+  font-size: 36px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.vehicle-details {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #555;
+}
+
+.vehicle-details strong {
+  font-weight: bold;
+}
+
+.vehicle-details p {
+  font-weight: bold;
+}
+
+/* Price */
+.price {
+  color: #007bff;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* Mobile responsiveness */
+@media screen and (max-width: 768px) {
+  .vehicle-detail-container {
+    padding: 15px;
+    text-align: center;
+  }
+
+  .vehicle-title {
+    font-size: 28px;
+  }
+
+  .vehicle-details {
+    font-size: 16px;
+  }
+
+  .price {
+    font-size: 20px;
+  }
+}
+
+/* Contenedor de la cuadrícula */
+#inv-display {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Tres columnas por fila */
+  gap: 20px; /* Espacio entre los elementos */
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Estilo de cada item dentro de la cuadrícula */
+#inv-display li {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #fff;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Estilo para la imagen */
+#inv-display li img {
+  width: 100%; /* Hace que la imagen ocupe todo el ancho del contenedor */
+  height: auto; /* Mantiene la proporción de la imagen */
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
+}
+
+/* Estilo para el nombre y precio */
+.namePrice {
+  padding: 10px 0;
+}
+
+.namePrice h2 {
+  font-size: 18px;
+  margin: 5px 0;
+}
+
+.namePrice span {
+  font-size: 16px;
+  color: #007bff;
+}
+
+/* Responsividad para pantallas más pequeñas */
+@media screen and (max-width: 768px) {
+  #inv-display {
+    grid-template-columns: 1fr; /* Una columna en pantallas pequeñas */
+  }
+}
