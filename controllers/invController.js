@@ -56,16 +56,4 @@ invController.buildByInvId = async function (req, res, next) {
   }
 }
 
-// Agregar una nueva función en invController.js
-invController.triggerError = function(req, res, next) {
-  try {
-    // Lanzamos un error intencional
-    throw new Error("Este es un error intencional para la tarea 3");
-  } catch (error) {
-    // Pasamos el error al middleware de manejo de errores
-    next(error);
-  }
-};
-
-
 module.exports = invController;

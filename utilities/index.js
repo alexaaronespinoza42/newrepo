@@ -22,10 +22,10 @@ Util.getNav = async function () {
       list += "</li>";
     });
     list += "</ul>";
-    return list;  // Retorna la lista construida
+    return list; 
   } catch (error) {
-    console.error("Error construyendo la barra de navegación: ", error);
-    return "<ul><li>Error al cargar la navegación</li></ul>";  // Mensaje de error en caso de que falle
+    console.error("Error building nav : ", error);
+    return "<ul><li>Error </li></ul>";  
   }
 };
 

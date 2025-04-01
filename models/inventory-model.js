@@ -31,21 +31,17 @@ invModel.getInventoryByClassificationId = async function(classification_id) {
  * ************************** */
 invModel.getInventoryById = async function(invId) {
   try {
-    // Hacemos la consulta a la base de datos para obtener los detalles del vehículo
     const data = await pool.query(
       `SELECT * FROM public.inventory WHERE inv_id = $1`, 
       [invId]
     );
     
-    // Si la consulta no devuelve resultados, retornamos null
     if (data.rows.length === 0) {
       return null;
     }
 
-    // Aseguramos que los datos devueltos tengan las claves adecuadas
     const vehicle = data.rows[0];
 
-    // Podemos devolver solo el objeto que necesitamos para el detalle del vehículo
     return {
       inv_id: vehicle.inv_id,
       inv_make: vehicle.inv_make,
@@ -55,7 +51,7 @@ invModel.getInventoryById = async function(invId) {
       inv_miles: vehicle.inv_miles,
       inv_color: vehicle.inv_color,
       inv_description: vehicle.inv_description,
-      inv_image: vehicle.inv_image, // Asegúrate de que la clave de la imagen sea correcta
+      inv_image: vehicle.inv_image,
     };
 
   } catch (error) {
