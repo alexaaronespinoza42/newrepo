@@ -1,0 +1,45 @@
+<div class="form-container">
+  <h1>Add a New Vehicle</h1>
+
+
+
+  <form action="/inv/add-inventory" method="POST">
+    <label for="vehicleName">Vehicel Name:</label>
+    <input type="text" name="vehicleName" id="vehicleName" required value="<%= typeof vehicleName != 'undefined' ? vehicleName : '' %>">
+
+    <label for="classification_id">Classification:</label>
+    <select name="classification_id" id="classification_id" required>
+      <option value="">Select Classification</option>
+      <%- classificationList %>
+    </select>
+
+    <label for="make">Make</label>
+    <input type="text" id="make" name="make" required>
+
+    <label for="model">Model</label>
+    <input type="text" id="model" name="model" required>
+
+    <label for="description">Description</label>
+    <textarea id="description" name="description" required></textarea>
+
+    <label for="image_path">Image Path</label>
+    <input type="text" id="image_path" name="image_path" value="images/vehicles/no-image.png">
+
+    <label for="thumbnail_path">Thumbnail Path</label>
+    <input type="text" id="thumbnail_path" name="thumbnail_path" value="images/vehicles/no-image.png">
+
+    <label for="price">Price</label>
+    <input type="number" name="price" id="price" required step="0.01" value="<%= typeof price != 'undefined' ? price : '' %>">
+
+    <label for="year">Year</label>
+    <input type="number" id="year" name="year" min="1900" max="2099" step="1" required>
+
+    <label for="miles">Miles</label>
+    <input type="number" id="miles" name="miles" required>
+
+    <label for="color">Color</label>
+    <input type="text" id="color" name="color" required>
+
+    <button type="submit">Add Vehicle: </button>
+  </form>
+</div>

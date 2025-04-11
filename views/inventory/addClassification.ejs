@@ -1,0 +1,9 @@
+<div class="form-container">
+  <h1>Add new Classification</h1>
+
+  <form action="/inv/add-classification" method="POST">
+    <label for="classificationName">Name of the Classification:</label>
+    <input type="text" name="classificationName" id="classificationName" required value="<%= typeof classificationName != 'undefined' ? classificationName : '' %>">
+    <button type="submit">Add Classification</button>
+  </form>
+</div>

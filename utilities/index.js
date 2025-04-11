@@ -7,6 +7,12 @@ const Util = {}
 Util.getNav = async function () {
   try {
     let data = await invModel.getClassifications();
+
+    // Verificamos que data y data.rows existan antes de usar .forEach
+    if (!data || !data.rows || !Array.isArray(data.rows)) {
+      throw new Error("Data format is incorrect or empty.");
+    }
+
     let list = "<ul>";
     list += '<li><a href="/" title="Home page">Home</a></li>';
     data.rows.forEach((row) => {
@@ -22,12 +28,13 @@ Util.getNav = async function () {
       list += "</li>";
     });
     list += "</ul>";
-    return list; 
+    return list;
   } catch (error) {
     console.error("Error building nav : ", error);
-    return "<ul><li>Error </li></ul>";  
+    return "<ul><li>Error: Unable to load navigation.</li></ul>";
   }
 };
+
 
 /* **************************************
 * Build the classification view HTML
@@ -79,6 +86,26 @@ Util.getNav = async function () {
       </div>
     `;
     return detail;
+  }
+
+
+  Util.buildClassificationList = async function (classification_id = null) {
+    let data = await invModel.getClassifications()
+    let classificationList =
+      '<select name="classification_id" id="classificationList" required>'
+    classificationList += "<option value=''>Choose a Classification</option>"
+    data.rows.forEach((row) => {
+      classificationList += '<option value="' + row.classification_id + '"'
+      if (
+        classification_id != null &&
+        row.classification_id == classification_id
+      ) {
+        classificationList += " selected "
+      }
+      classificationList += ">" + row.classification_name + "</option>"
+    })
+    classificationList += "</select>"
+    return classificationList
   }
   
 module.exports = Util
