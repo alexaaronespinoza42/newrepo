@@ -10,7 +10,7 @@ validate.classificationRules = () => {
       .trim()
       .notEmpty()
       .matches(/^[a-zA-Z0-9]+$/)
-      .withMessage("El nombre no debe tener espacios ni caracteres especiales."),
+      .withMessage("The name can't contain spacial characters or spaces in between"),
   ]
 }
 
@@ -19,13 +19,13 @@ validate.inventoryRules = () => {
     body("vehicleName")
       .trim()
       .notEmpty()
-      .withMessage("El nombre del vehículo es obligatorio."),
+      .withMessage("The name of the vehicle is required."),
     body("classification_id")
       .isInt()
-      .withMessage("Selecciona una clasificación válida."),
+      .withMessage("Select a valid classification."),
     body("price")
       .isFloat({ min: 0 })
-      .withMessage("El precio debe ser un número positivo."),
+      .withMessage("The price must be a positive integeter."),
   ]
 }
 
@@ -55,7 +55,7 @@ validate.checkInventoryData = async (req, res, next) => {
     let nav = await utilities.getNav();
     res.render("inventory/addInventory", {
       errors: errors.array(),
-      title: "Añadir Vehículo al Inventario",
+      title: "Add vehicle in Inventary",
       nav,
       flashMessage: [],
       classificationList,

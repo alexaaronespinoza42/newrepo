@@ -10,19 +10,13 @@ router.get("/type/:classificationId", invController.buildByClassificationId);
 router.get("/detail/:invId", invController.buildByInvId);
 
 // Management Route
-router.get('/', invController.managementView); // Sin prefijo '/inv'
+router.get('/', invController.managementView); 
 
-// Ruta para ver el formulario de añadir clasificación
-router.get('/add-classification', invController.addClassificationView); // Sin prefijo '/inv'
+// Route add Classification
+router.get('/add-classification', invController.addClassificationView); 
 
-// Ruta para procesar el formulario de añadir clasificación
-// router.post('/add-classification', invController.addClassification); // Sin prefijo '/inv'
-
-// Ruta para ver el formulario de añadir inventario
-router.get('/add-inventory', invController.addInventoryView); // Sin prefijo '/inv'
-
-// Ruta para procesar el formulario de añadir inventario
-// router.post('/add-inventory', invController.addInventory); // Sin prefijo '/inv'
+// Route add Inventory
+router.get('/add-inventory', invController.addInventoryView); 
 
 router.post(
   "/add-classification",

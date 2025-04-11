@@ -70,7 +70,6 @@ invModel.addClassification = async function(classification_name) {
   }
 }
 
-// Insertar nuevo vehículo
 invModel.addInventory = async function(make, model, description, image, thumbnail, price, year, miles, color, classification_id) {
   try {
     const sql = `

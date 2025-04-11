@@ -1,5 +1,4 @@
 <main>
-  <!-- Mostrar errores de validación si existen -->
   <% if (errors) { %>
     <ul class="notice">
       <% errors.array().forEach(error => { %>
@@ -8,7 +7,6 @@
     </ul>
   <% } %> 
 
-  <!-- Formulario de registro -->
   <div class="register-container">
     <form action="/account/register" method="POST">
       <div class="form-group">

@@ -1,6 +1,5 @@
 <h1>View Management</h1>
 
-<!-- Mostrar el mensaje flash -->
 <% if (flashMessage && flashMessage.length > 0) { %>
   <div class="flash-messages">
     <% flashMessage.forEach(message => { %>
@@ -9,6 +8,5 @@
   </div>
 <% } %>
 
-<!-- Enlaces para añadir clasificación y vehículo -->
 <p><a href="/inv/add-classification">Add new Classification</a></p>
 <p><a href="/inv/add-inventory">Add New Vehicle in the Inventary</a></p>

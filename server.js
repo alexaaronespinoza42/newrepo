@@ -51,7 +51,6 @@ app.use(
   })
 );
 
-// Asegúrate de que flash se use **después de session**
 app.use(flash());
 
 /* ***********************

@@ -23,7 +23,7 @@ router.use((err, req, res, next) => {
   const nav = "<ul><li><a href='/'>Home</a></li></ul>";
   res.status(err.status || 500).render("error", {
     title: "Error",
-    message: err.message || "Error al cargar la página",
+    message: err.message || "Error loading the page",
     status: err.status || 500,
     nav,
   });
