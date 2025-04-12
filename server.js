@@ -6,6 +6,8 @@
 /* ***********************
  * Require Statements
  *************************/
+const cookieParser = require("cookie-parser")
+const utilities = require("./utilities")
 const bodyParser = require("body-parser");
 const pool = require("./database/");
 const express = require("express");
@@ -52,6 +54,8 @@ app.use(
 );
 
 app.use(flash());
+app.use(cookieParser())
+app.use(utilities.checkJWTToken)
 
 /* ***********************
  * Express Routes

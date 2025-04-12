@@ -53,6 +53,7 @@ validate.registationRules = () => {
         .withMessage("Password does not meet requirements."),
     ]
   }
+  
 
   /* ******************************
  * Check data and return errors or continue to registration
@@ -75,5 +76,33 @@ validate.checkRegData = async (req, res, next) => {
     }
     next()
   }
+  
+  validate.loginRules = () => {
+    return [
+      body("account_email")
+        .trim()
+        .isEmail()
+        .withMessage("Please provide a valid email."),
+      body("account_password")
+        .trim()
+        .notEmpty()
+        .withMessage("Password is required.")
+    ]
+  }
+  
+  validate.checkLoginData = async (req, res, next) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      const nav = await utilities.getNav()
+      return res.status(400).render("account/login", {
+        title: "Login",
+        nav,
+        errors: errors.array(),
+        account_email: req.body.account_email
+      })
+    }
+    next()
+  }
+  
   
   module.exports = validate

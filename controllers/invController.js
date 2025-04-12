@@ -6,7 +6,7 @@ const invController = {}
 
 // Método para mostrar la vista de administración
 invController.managementView = async (req, res) => {
-  const flashMessage = req.flash('message');
+  const flashMessage = req.flash('notice',"Inventory Added")
   const nav = await utilities.getNav(); 
   res.render('inventory/managementView', { 
     flashMessage, 
@@ -17,7 +17,7 @@ invController.managementView = async (req, res) => {
 
 
 invController.addClassificationView = (req, res) => {
-  const flashMessage = req.flash('message');  
+  const flashMessage = req.flash('notice',"Classification Added") 
 
   const nav = `
     <ul>
@@ -29,10 +29,12 @@ invController.addClassificationView = (req, res) => {
     </ul>
   `;
 
-  res.render('inventory/addClassification', {
-    flashMessage,  
-    title: 'Add Classification',  
-    nav  
+  res.render("inventory/addClassification", {
+    title: "Add Classification",
+    nav,
+    flashMessage,
+    errors: [],
+    classificationName: ""
   });
 };
 
@@ -51,7 +53,7 @@ invController.addClassification = async (req, res) => {
     await invModel.addClassification(classificationName);
 
     const nav = await utilities.getNav();
-    const flashMessage = ['Classification added.']
+    const flashMessage = req.flash("notice","Classification Added");
 
     res.render('inventory/managementView', {
       title: 'Inventory Administration',
@@ -65,34 +67,31 @@ invController.addClassification = async (req, res) => {
 }
 
 invController.addInventoryView = async (req, res) => {
-  const flashMessage = req.flash('message');
+  const flashMessage = req.flash("notice","Vehicle Added");
   const nav = await utilities.getNav();
-  const title = "Add a new Vehicle in the Inventary";
+  const classifications = await invModel.getClassifications();
+  const classificationList = classifications.rows.map(c =>
+    `<option value="${c.classification_id}">${c.classification_name}</option>`
+  ).join("");
 
-  try {
-    const classifications = await invModel.getClassifications();
-  console.log("🚀 Classifications loaded:", classifications.rows); 
-
-    const classificationList = classifications.rows.map(c =>
-      `<option value="${c.classification_id}">${c.classification_name}</option>`
-    ).join('');
-
-    res.render('inventory/addInventory', {
-      flashMessage,
-      title,
-      nav,
-      classificationList
-    });
-  } catch (error) {
-    console.error("Error loading classifications:", error);
-    req.flash('message', "Can't load classifications");
-    res.redirect('/inv');
-  }
+  res.render("inventory/addInventory", {
+    title: "Add New Vehicle",
+    nav,
+    flashMessage,
+    classificationList,
+    errors: [],
+    vehicleName: "",
+    make: "",
+    model: "",
+    description: "",
+    image_path: "",
+    thumbnail_path: "",
+    price: "",
+    year: "",
+    miles: "",
+    color: ""
+  });
 };
-
-
-
-
 
 // Método para procesar el formulario de añadir inventario
 invController.addInventory = async (req, res) => {

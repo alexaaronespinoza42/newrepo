@@ -1,25 +1,42 @@
-// accountRoute.js
-const regValidate = require('../utilities/account-validation')
+// routes/accountRoute.js
 const express = require("express");
-const router = new express.Router();
+const router = express.Router();
+const regValidate = require("../utilities/account-validation");
+const utilities = require("../utilities");            // ← Agrégalo
 const accountController = require("../controllers/accountController");
 
-// Login view route
+// Login view
 router.get("/login", accountController.buildLogin);
 
-// Register view route
+// Register view
 router.get("/register", accountController.buildRegister);
 
-// Process the registration data
+// Process registration
 router.post(
   "/register",
   regValidate.registationRules(),
-  regValidate.checkRegData,(accountController.registerAccount)
-)
+  regValidate.checkRegData,
+  accountController.registerAccount
+);
+
+// Process login
+router.post(
+  "/login",
+  regValidate.loginRules(),
+  regValidate.checkLoginData,
+  accountController.accountLogin
+);
+
+// Account management view (protegida)
+router.get(
+  "/",
+  utilities.checkLogin,      // ← Ahora utilities está definido
+  accountController.buildAccount
+);
 
 // Error management
 router.use((err, req, res, next) => {
-  console.error("Error en accountRoute: ", err);
+  console.error("Error en accountRoute:", err);
   const nav = "<ul><li><a href='/'>Home</a></li></ul>";
   res.status(err.status || 500).render("error", {
     title: "Error",
@@ -28,13 +45,5 @@ router.use((err, req, res, next) => {
     nav,
   });
 });
-
-// Process the login attempt
-router.post(
-  "/login",
-  (req, res) => {
-    res.status(200).send('login process')
-  }
-)
 
 module.exports = router;

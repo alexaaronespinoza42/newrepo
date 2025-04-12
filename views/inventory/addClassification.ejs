@@ -1,9 +1,27 @@
 <div class="form-container">
   <h1>Add new Classification</h1>
 
+  <% if (flashMessage && flashMessage.length > 0) { %>
+    <div class="flash-message"><%= flashMessage %></div>
+  <% } %>
+
+  <% if (errors && errors.length > 0) { %>
+    <div class="errors">
+      <% errors.forEach(e => { %>
+        <p><%= e.msg %></p>
+      <% }) %>
+    </div>
+  <% } %>
+  
   <form action="/inv/add-classification" method="POST">
     <label for="classificationName">Name of the Classification:</label>
-    <input type="text" name="classificationName" id="classificationName" required value="<%= typeof classificationName != 'undefined' ? classificationName : '' %>">
+    <input
+      type="text"
+      name="classificationName"
+      id="classificationName"
+      required
+      value="<%= typeof classificationName != 'undefined' ? classificationName : '' %>"
+    >
     <button type="submit">Add Classification</button>
   </form>
 </div>
