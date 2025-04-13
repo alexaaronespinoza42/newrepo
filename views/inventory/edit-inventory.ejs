@@ -1,0 +1,55 @@
+<div class="form-container">
+  <h1>Edit Vehicle</h1>
+
+  <% if (flashMessage && flashMessage.length > 0) { %>
+    <div class="flash-message">
+      <% flashMessage.forEach(msg => { %>
+        <p><%= msg %></p>
+      <% }) %>
+    </div>
+  <% } %>
+
+  <form id="updateForm" action="/inv/update" method="POST">
+    <label for="classification_id">Classification:</label>
+    <select name="classification_id" id="classification_id" required>
+      <option value="">Select Classification</option>
+      <%- classificationList %>
+    </select>
+
+    <label for="make">Make</label>
+    <input type="text" id="make" name="inv_make" required value="<%= typeof make != 'undefined' ? make : '' %>">
+
+    <label for="model">Model</label>
+    <input type="text" id="model" name="inv_model" required value="<%= typeof model != 'undefined' ? model : '' %>">
+
+    <label for="description">Description</label>
+    <textarea id="description" name="inv_description" required><%= typeof description != 'undefined' ? description : '' %></textarea>
+
+    <label for="image_path">Image Path</label>
+    <input type="text" id="image_path" name="inv_image" value="<%= typeof image_path != 'undefined' ? image_path : '/images/vehicles/no-image.png' %>">
+
+    <label for="thumbnail_path">Thumbnail Path</label>
+    <input type="text" id="thumbnail_path" name="inv_thumbnail" value="<%= typeof thumbnail_path != 'undefined' ? thumbnail_path : '/images/vehicles/no-image-tn.png' %>">
+
+    <label for="price">Price</label>
+    <input type="number" name="inv_price" id="price" required step="0.01" value="<%= typeof price != 'undefined' ? price : '' %>">
+
+    <label for="year">Year</label>
+    <input type="number" id="year" name="inv_year" min="1900" max="2099" required value="<%= typeof year != 'undefined' ? year : '' %>">
+
+    <label for="miles">Miles</label>
+    <input type="number" id="miles" name="inv_miles" required value="<%= typeof miles != 'undefined' ? miles : '' %>">
+
+    <label for="color">Color</label>
+    <input type="text" id="color" name="inv_color" required value="<%= typeof color != 'undefined' ? color : '' %>">
+
+    <!-- Botón ÚNICO con disabled -->
+    <button type="submit" disabled>Update Vehicle</button>
+
+    <!-- Campo oculto con inv_id -->
+    <input type="hidden" name="inv_id" value="<%= inv_id %>">
+  </form>
+</div>
+
+<!-- Script activador del botón -->
+<script src="/js/inv-update.js"></script>

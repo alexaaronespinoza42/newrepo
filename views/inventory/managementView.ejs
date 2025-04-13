@@ -1,12 +1,26 @@
-<h1>View Management</h1>
+<div class="management-container">
+  <h1>View Management</h1>
 
-<% if (flashMessage && flashMessage.length > 0) { %>
-  <div class="flash-messages">
-    <% flashMessage.forEach(message => { %>
-      <p><%= message %></p>
-    <% }) %>
+  <% if (flashMessage && flashMessage.length > 0) { %>
+    <div class="flash-messages">
+      <% flashMessage.forEach(message => { %>
+        <p><%= message %></p>
+      <% }) %>
+    </div>
+  <% } %>
+
+  <p><a href="/inv/add-classification">Add new Classification</a></p>
+  <p><a href="/inv/add-inventory">Add New Vehicle in the Inventory</a></p>
+
+  <h2>Manage Inventory</h2>
+  <p>Choose a clasification to see the inventory items. </p>
+
+  <div class="form-group">
+    <%- classificationList %>
   </div>
-<% } %>
 
-<p><a href="/inv/add-classification">Add new Classification</a></p>
-<p><a href="/inv/add-inventory">Add New Vehicle in the Inventary</a></p>
+  <table id="inventoryDisplay"></table>
+  <noscript>JavaScript must be enabled to use this page.</noscript>
+</div>
+
+<script src="/js/inventory.js"></script>

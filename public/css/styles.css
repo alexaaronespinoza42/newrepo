@@ -466,3 +466,79 @@ button:hover {
   border-radius: 5px;
   text-align: left;
 }
+/* Estilos específicos para managementView */
+.management-container {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 30px;
+  background-color: #ffffffcc;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  text-align: left;
+}
+
+.management-container h1,
+.management-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.management-container p a {
+  display: inline-block;
+  margin: 10px 0;
+  background-color: #007bff;
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.management-container p a:hover {
+  background-color: #0056b3;
+}
+
+/* Estilo para el select */
+#classificationList {
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  display: block;
+}
+
+/* Estilo para la tabla */
+#inventoryDisplay {
+  width: 100%;
+  margin-top: 30px;
+  border-collapse: collapse;
+}
+
+#inventoryDisplay thead {
+  background-color: #007bff;
+  color: white;
+}
+
+#inventoryDisplay th,
+#inventoryDisplay td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+#inventoryDisplay tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+#inventoryDisplay a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#inventoryDisplay a:hover {
+  text-decoration: underline;
+}

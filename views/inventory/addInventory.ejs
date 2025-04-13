@@ -33,10 +33,10 @@
     <textarea id="description" name="description" required><%= typeof description != 'undefined' ? description : '' %></textarea>
   
     <label for="image_path">Image Path</label>
-    <input type="text" id="image_path" name="image_path" value="<%= typeof image_path != 'undefined' ? image_path : 'images/vehicle/no-image.png' %>">
+    <input type="text" id="image_path" name="image_path" value="<%= typeof image_path != 'undefined' ? image_path : '/images/vehicles/no-image.png' %>">
   
     <label for="thumbnail_path">Thumbnail Path</label>
-    <input type="text" id="thumbnail_path" name="thumbnail_path" value="<%= typeof thumbnail_path != 'undefined' ? thumbnail_path : 'images/vehicle/no-image.png' %>">
+    <input type="text" id="thumbnail_path" name="thumbnail_path" value="<%= typeof thumbnail_path != 'undefined' ? thumbnail_path : '/images/vehicles/no-image-tn.png' %>">
   
     <label for="price">Price</label>
     <input type="number" name="price" id="price" required step="0.01" value="<%= typeof price != 'undefined' ? price : '' %>"><br>

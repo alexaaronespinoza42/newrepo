@@ -32,11 +32,24 @@ router.post(
   invController.addInventory
 );
 
+router.get("/getInventory/:classification_id", invController.getInventoryJSON);
+
+router.get("/edit/:inv_id", invController.editInventoryView)
+
+router.post(
+  "/update",
+  validate.inventoryRules(),
+  validate.checkUpdateData,
+  invController.updateInventory
+)
+
+
 // Error 500
 router.get('/trigger-error', (req, res, next) => {
   const error = new Error("Intentional Error for 500");
   error.status = 500;
   next(error);
 });
+
 
 module.exports = router;
