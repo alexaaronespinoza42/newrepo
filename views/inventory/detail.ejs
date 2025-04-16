@@ -2,12 +2,46 @@
 
 <body>
   <div class="vehicle-container">
-    <div class="vehicle-image>
-
+    <div class="vehicle-image">
+      <!-- Aquí podrías incluir la imagen si lo deseas -->
     </div>
+
     <%- details %>  
+  </div>
+
+  <div class="form-container">
+    <h2>💬 Comments</h2>
+
+    <% if (locals.loggedin) { %>
+      <form action="/comments/add" method="POST" class="form-container">
+        <input type="hidden" name="inv_id" value="<%= vehicle.inv_id %>">
+        <label for="comment_text">Leave a comment:</label>
+        <textarea name="comment_text" id="comment_text" required></textarea>
+        <button type="submit">Post Comment</button>
+      </form>
+    <% } else { %>
+      <p><a href="/account/login">Log in</a> to leave a comment.</p>
+    <% } %>
+
+    <% if (comments && comments.length > 0) { %>
+      <ul class="comments-list">
+        <% comments.forEach(c => { %>
+          <li>
+            <strong><%= c.account_firstname %></strong> 
+            <em><%= new Date(c.comment_date).toLocaleString() %></em><br>
+            <p><%= c.comment_text %></p>
+
+            <% if (loggedin && (accountData.account_id === c.account_id || accountData.account_type === "Admin" || accountData.account_type === "Employee")) { %>
+              <form action="/comments/delete/<%= c.comment_id %>" method="POST" style="display:inline;">
+                <button type="submit" class="own-btn" onclick="return confirm('Delete this comment?')">Delete</button>
+              </form>
+            <% } %>
+          </li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p>No comments yet.</p>
+    <% } %>
   </div>
 </body>
 </html>
-
-

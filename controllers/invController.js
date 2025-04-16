@@ -1,6 +1,8 @@
 const invModel = require("../models/inventory-model")
 const utilities = require("../utilities/")
 const flash = require("connect-flash");
+const commentModel = require("../models/comment-model"); // 👈
+
 
 const invController = {}
 
@@ -179,26 +181,30 @@ invController.buildByClassificationId = async function (req, res, next) {
  * ************************** */
 invController.buildByInvId = async function (req, res, next) {
   try {
-    const invId = req.params.invId
-    const data = await invModel.getInventoryById(invId)
+    const invId = req.params.invId;
+    const data = await invModel.getInventoryById(invId);
 
     if (!data) {
-      return res.status(404).render("errors/404", { title: "Vehicle Not Found" })
+      return res.status(404).render("errors/404", { title: "Vehicle Not Found" });
     }
 
-    const details = await utilities.buildDetailView(data)
-    const nav = await utilities.getNav()
+    const details = await utilities.buildDetailView(data);
+    const nav = await utilities.getNav();
+    const comments = await commentModel.getCommentsByInvId(invId);
 
     res.render("./inventory/detail", {
       title: `${data.inv_make} ${data.inv_model}`,
       nav,
-      details,
-    })
+      details,        // HTML
+      vehicle: data,  // 👈 Objeto JS para acceder a .inv_id
+      comments,
+    });
   } catch (error) {
-    console.error("Error fetching vehicle details:", error)
-    res.status(500).send("Internal Server Error")
+    console.error("Error fetching vehicle details:", error);
+    res.status(500).send("Internal Server Error");
   }
-}
+};
+
 
 /* ***************************
  *  Return Inventory by Classification As JSON

@@ -20,6 +20,7 @@ const static = require("./routes/static");
 const baseController = require("./controllers/baseController");
 const inventoryRoute = require("./routes/inventoryRoute");
 const accountRoute = require("./routes/accountRoute");
+const commentRoute = require("./routes/commentRoute");
 
 /* ***********************
  * Setup for Static Files (CSS, JS, Images)
@@ -70,6 +71,10 @@ app.use("/inv", inventoryRoute);
 
 // Account routes
 app.use("/account", accountRoute);
+
+// Comment Route
+app.use("/comments", commentRoute);
+
 
 /* ***********************
  * Local Server Information
