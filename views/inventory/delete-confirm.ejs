@@ -1,0 +1,28 @@
+<h1>Confirm Deletion</h1>
+<p>⚠️ This action cannot be undone. Please confirm that you want to permanently delete this vehicle.</p>
+
+<% if (flashMessage && flashMessage.length > 0) { %>
+  <div class="flash-message">
+    <% flashMessage.forEach(msg => { %>
+      <p><%= msg %></p>
+    <% }) %>
+  </div>
+<% } %>
+
+<form action="/inv/delete" method="POST">
+  <label for="make">Make</label>
+  <input type="text" id="make" name="make" value="<%= make %>" readonly>
+
+  <label for="model">Model</label>
+  <input type="text" id="model" name="model" value="<%= model %>" readonly>
+
+  <label for="year">Year</label>
+  <input type="number" id="year" name="year" value="<%= year %>" readonly>
+
+  <label for="price">Price</label>
+  <input type="text" id="price" name="price" value="<%= price %>" readonly>
+
+  <input type="hidden" name="inv_id" value="<%= inv_id %>">
+
+  <button type="submit" class="btn btn-danger">Delete Vehicle</button>
+</form>

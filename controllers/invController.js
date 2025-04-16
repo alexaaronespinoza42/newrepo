@@ -9,6 +9,27 @@ invController.managementView = async (req, res) => {
   const flashMessage = req.flash('notice',"Inventory Added")
   const nav = await utilities.getNav(); 
   const classificationList = await utilities.buildClassificationList()
+
+  invController.managementView = async (req, res) => {
+    const nav = await utilities.getNav();
+    const classificationList = await utilities.buildClassificationList();
+    const flashMessage = req.flash('notice');
+  
+    const accountType = res.locals.accountData?.account_type;
+    if (accountType !== "Admin" && accountType !== "Employee") {
+      req.flash("notice", "Unauthorized. You must be an employee or admin.");
+      return res.redirect("/account");
+    }
+  
+    res.render('inventory/managementView', {
+      title: "Inventory Administration",
+      nav,
+      classificationList,
+      flashMessage
+    });
+  };
+  
+
   res.render('inventory/managementView', { 
     flashMessage, 
     title: "Inventory Administration", 
@@ -45,7 +66,7 @@ invController.addClassification = async (req, res) => {
 
   // Validación simple
   if (!/^[a-zA-Z0-9]+$/.test(classificationName)) {
-    req.flash('message', "The name of the classification can't contain special caracters or spaces in between");
+    req.flash('notice', "The name of the classification can't contain special caracters or spaces in between");
     return res.redirect('/inv/add-classification');
   }
 
@@ -61,7 +82,7 @@ invController.addClassification = async (req, res) => {
       flashMessage
     });
   } catch (err) {
-    req.flash('message', 'Error adding new Classification.');
+    req.flash('notice', 'Error adding new Classification.');
     res.redirect('/inv/add-classification');
   }
 }
@@ -78,47 +99,49 @@ invController.addInventoryView = async (req, res) => {
     title: "Add New Vehicle",
     nav,
     flashMessage,
-    classificationList,
     errors: [],
     vehicleName: "",
-    make: "",
-    model: "",
-    description: "",
-    image_path: "",
-    thumbnail_path: "",
-    price: "",
-    year: "",
-    miles: "",
-    color: ""
+    inv_make: "",
+    inv_model: "",
+    inv_description: "",
+    inv_image: "",
+    inv_thumbnail: "",
+    inv_price: "",
+    inv_year: "",
+    inv_miles: "",
+    inv_color: "",
+    classificationList
   });
 };
 
-// Método para procesar el formulario de añadir inventario
+// ADD INVENTORY
 invController.addInventory = async (req, res) => {
   const {
-    make, model, description,
-    image_path, thumbnail_path, price,
-    year, miles, color, classification_id
+    inv_make, inv_model, inv_description,
+    inv_image, inv_thumbnail, inv_price,
+    inv_year, inv_miles, inv_color, classification_id
   } = req.body;
 
   try {
     await invModel.addInventory(
-      make, model, description,
-      image_path, thumbnail_path, price,
-      year, miles, color, classification_id
+      inv_make, inv_model, inv_description,
+      inv_image, inv_thumbnail, inv_price,
+      inv_year, inv_miles, inv_color, classification_id
     );
 
     const nav = await utilities.getNav();
-    req.flash('message', 'Vehicle added.');
+    const classificationList = await utilities.buildClassificationList();
+    req.flash("notice", 'Vehicle added.');
 
     res.render('inventory/managementView', {
       title: 'Inventory Administration',
       nav,
-      flashMessage: req.flash('message')
+      flashMessage: req.flash('notice'),
+      classificationList
     });
 
   } catch (err) {
-    req.flash('message', 'Error adding vehicle.');
+    req.flash('notice', 'Error adding vehicle.');
     res.redirect('/inv/add-inventory');
   }
 }
@@ -290,5 +313,44 @@ invController.updateInventory = async function (req, res, next) {
     })
   }
 }
+
+/* ***************************
+ *  Build Delete Confirmation View
+ * ************************** */
+invController.deleteInventoryView = async function (req, res, next) {
+  const inv_id = parseInt(req.params.inv_id)
+  const nav = await utilities.getNav()
+  const itemData = await invModel.getInventoryById(inv_id)
+  const itemName = `${itemData.inv_make} ${itemData.inv_model}`
+
+  res.render("inventory/delete-confirm", {
+    title: "Delete " + itemName,
+    nav,
+    flashMessage: req.flash("notice"),
+    errors: null,
+    inv_id: itemData.inv_id,
+    make: itemData.inv_make,
+    model: itemData.inv_model,
+    year: itemData.inv_year,
+    price: itemData.inv_price
+  })
+}
+
+/* ***************************
+ *  Process Delete Inventory Item
+ * ************************** */
+invController.deleteInventoryItem = async function (req, res, next) {
+  const inv_id = parseInt(req.body.inv_id)
+  const result = await invModel.deleteInventoryItem(inv_id)
+
+  if (result.rowCount > 0) {
+    req.flash("notice", "✅ Vehicle deleted successfully.")
+    res.redirect("/inv")
+  } else {
+    req.flash("notice", "❌ Delete failed. Please try again.")
+    res.redirect(`/inv/delete/${inv_id}`)
+  }
+}
+
 
 module.exports = invController;

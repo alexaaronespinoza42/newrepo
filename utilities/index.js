@@ -115,24 +115,27 @@ Util.getNav = async function () {
 * Middleware to check token validity
 **************************************** */
 Util.checkJWTToken = (req, res, next) => {
-  if (req.cookies.jwt) {
-   jwt.verify(
-    req.cookies.jwt,
-    process.env.ACCESS_TOKEN_SECRET,
-    function (err, accountData) {
-     if (err) {
-      req.flash("Please log in")
-      res.clearCookie("jwt")
-      return res.redirect("/account/login")
-     }
-     res.locals.accountData = accountData
-     res.locals.loggedin = 1
-     next()
-    })
+  const token = req.cookies.jwt;
+  if (token) {
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, function (err, decoded) {
+      if (err) {
+        req.flash("notice", "Session expired. Please log in.");
+        res.clearCookie("jwt");
+        return res.redirect("/account/login");
+      }
+      console.log("Decoded JWT:", decoded);  
+      res.locals.accountData = decoded;
+      res.locals.firstname = decoded.account_firstname;
+      res.locals.loggedin = true;
+      next();
+    });
   } else {
-   next()
+    res.locals.loggedin = false;
+    next();
   }
- }
+};
+
+
 
 /* ****************************************
  *  Check Login

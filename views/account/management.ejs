@@ -1,0 +1,27 @@
+<div class="management-container">
+  <% if (flashMessage && flashMessage.length > 0) { %>
+    <div class="flash-message">
+      <% flashMessage.forEach(msg => { %>
+        <p><%= msg %></p>
+      <% }) %>
+    </div>
+  <% } %>
+
+  <h2>Welcome <%= firstname %></h2>
+  <p>You're logged in.</p>
+
+  <p>
+    <a href="/account/update/<%= account_id %>" class="own-btn">
+      ✏️ Edit Account Information
+    </a>
+  </p>
+
+  <% if (account_type === "Employee" || account_type === "Admin") { %>
+    <h3>Inventory Management</h3>
+    <p>
+      <a href="/inv" class="own-btn">
+        📦 Manage Inventory
+      </a>
+    </p>
+  <% } %>
+</div>

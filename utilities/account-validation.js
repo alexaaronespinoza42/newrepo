@@ -104,5 +104,55 @@ validate.checkRegData = async (req, res, next) => {
     next()
   }
   
+  validate.updateAccountRules = () => {
+    return [
+      body("account_firstname").trim().notEmpty().withMessage("First name is required."),
+      body("account_lastname").trim().notEmpty().withMessage("Last name is required."),
+      body("account_email").trim().isEmail().withMessage("Valid email is required.")
+    ]
+  }
   
+  validate.checkUpdateData = async (req, res, next) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      const nav = await utilities.getNav()
+      return res.render("account/update", {
+        title: "Update Account",
+        nav,
+        errors: errors.array(),
+        flashMessage: [],
+        ...req.body
+      })
+    }
+    next()
+  }
+  
+  validate.passwordRule = () => {
+    return [
+      body("account_password").trim().isStrongPassword({
+        minLength: 12,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1,
+      }).withMessage("Password must be strong (12+ chars, upper, number, symbol).")
+    ]
+  }
+  
+  validate.checkPasswordUpdate = async (req, res, next) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      const nav = await utilities.getNav()
+      const accountData = await accountModel.getAccountById(req.body.account_id)
+      return res.render("account/update", {
+        title: "Update Account",
+        nav,
+        errors: errors.array(),
+        flashMessage: [],
+        ...accountData
+      })
+    }
+    next()
+  }
+  
+
   module.exports = validate

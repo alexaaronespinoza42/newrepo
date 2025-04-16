@@ -43,6 +43,10 @@ router.post(
   invController.updateInventory
 )
 
+router.get("/delete/:inv_id", invController.deleteInventoryView);
+
+router.post("/delete", invController.deleteInventoryItem);
+
 
 // Error 500
 router.get('/trigger-error', (req, res, next) => {

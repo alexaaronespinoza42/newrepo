@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const utilities = require("../utilities");
 const accountModel = require("../models/account-model");
+const { updateAccountRules } = require("../utilities/account-validation");
 
 /* Deliver login view */
 async function buildLogin(req, res, next) {
@@ -110,14 +111,83 @@ async function accountLogin(req, res, next) {
 async function buildAccount(req, res, next) {
   try {
     const nav = await utilities.getNav();
-    res.render("account/account", {
+    const accountData = res.locals.accountData;
+    console.log("Account Data in buildAccount:", accountData); 
+
+    res.render("account/management", {
       title: "Account Management",
       nav,
-      errors: null,
+      firstname: accountData.account_firstname,
+      account_id: accountData.account_id,
+      account_type: accountData.account_type,
       flashMessage: req.flash("notice")
     });
   } catch (error) {
     next(error);
+  }
+}
+
+
+
+async function buildUpdateView  (req, res) {
+  const account_id = parseInt(req.params.account_id)
+  const accountData = await accountModel.getAccountById(account_id)
+  const nav = await utilities.getNav()
+
+  res.render("account/update", {
+    title: "Update Account",
+    nav,
+    errors: null,
+    flashMessage: req.flash("notice"),
+    account_id: accountData.account_id,
+    account_firstname: accountData.account_firstname,
+    account_lastname: accountData.account_lastname,
+    account_email: accountData.account_email,
+  })
+}
+
+async function updateAccount (req, res) {
+  const { account_id, account_firstname, account_lastname, account_email } = req.body
+  const updateResult = await accountModel.updateAccount(account_id, account_firstname, account_lastname, account_email)
+  const nav = await utilities.getNav()
+
+  if (updateResult) {
+    req.flash("notice", "✅ Account updated successfully.")
+    const accountData = await accountModel.getAccountById(account_id)
+    res.render("account/management", {
+      title: "Account Management",
+      nav,
+      flashMessage: req.flash("notice"),
+      account_id: accountData.account_id,
+      firstname: accountData.account_firstname,
+      account_type: accountData.account_type
+    })
+  } else {
+    req.flash("notice", "❌ Update failed.")
+    res.redirect(`/account/update/${account_id}`)
+  }
+}
+
+async function updatePassword  (req, res) {
+  const { account_id, account_password } = req.body
+  const nav = await utilities.getNav()
+  const hashedPassword = await bcrypt.hash(account_password, 10)
+  const updateResult = await accountModel.updatePassword(account_id, hashedPassword)
+
+  if (updateResult) {
+    req.flash("notice", "✅ Password updated successfully.")
+    const accountData = await accountModel.getAccountById(account_id)
+    res.render("account/management", {
+      title: "Account Management",
+      nav,
+      flashMessage: req.flash("notice"),
+      account_id: accountData.account_id,
+      firstname: accountData.account_firstname,
+      account_type: accountData.account_type
+    })
+  } else {
+    req.flash("notice", "❌ Password update failed.")
+    res.redirect(`/account/update/${account_id}`)
   }
 }
 
@@ -126,5 +196,9 @@ module.exports = {
   buildRegister,
   registerAccount,
   accountLogin,
-  buildAccount
+  buildAccount,
+  buildUpdateView,
+  updateAccount,
+  updateAccountRules,
+  updatePassword
 };
